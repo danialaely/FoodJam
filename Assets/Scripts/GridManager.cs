@@ -245,28 +245,25 @@ public class GridManager : MonoBehaviour
         if (movement.sqrMagnitude < 0.000001f)
             return Vector3.zero;
 
-        Vector3 direction =
-            movement.normalized;
+        Vector3 direction = movement.normalized;
+        float distance = movement.magnitude;
 
-        float distance =
-            movement.magnitude;
+        // Size of the food in world space
+        Vector3 halfExtents = new Vector3(
+            piece.size.x * cellSize * 0.5f,
+            0.5f,
+            piece.size.y * cellSize * 0.5f
+        );
 
-        Collider pieceCollider =
-            piece.GetComponentInChildren<Collider>();
-
-        if (pieceCollider == null)
-            return movement;
-
-        Bounds bounds =
-            pieceCollider.bounds;
-
-        Vector3 halfExtents =
-            bounds.extents;
+        // Slightly shrink the collision box
+        // so pieces don't feel artificially far apart.
+        halfExtents.x -= 0.03f;
+        halfExtents.z -= 0.03f;
 
         RaycastHit hit;
 
         if (Physics.BoxCast(
-            bounds.center,
+            currentPosition,
             halfExtents,
             direction,
             out hit,
@@ -275,13 +272,14 @@ public class GridManager : MonoBehaviour
             foodLayer
         ))
         {
-            if (hit.collider.GetComponentInParent<FoodPiece>() != piece)
+            FoodPiece hitPiece =
+                hit.collider.GetComponentInParent<FoodPiece>();
+
+            // Ignore our own colliders
+            if (hitPiece != null && hitPiece != piece)
             {
                 float safeDistance =
-                    Mathf.Max(
-                        0f,
-                        hit.distance - 0.02f
-                    );
+                    Mathf.Max(0f, hit.distance - 0.02f);
 
                 return direction * safeDistance;
             }
