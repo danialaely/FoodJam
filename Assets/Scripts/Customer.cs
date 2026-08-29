@@ -7,8 +7,7 @@ public class Customer : MonoBehaviour
     [Header("Order")]
     public List<FoodType> requestedFoods = new List<FoodType>();
 
-    private List<FoodType> remainingFoods =
-        new List<FoodType>();
+    private List<FoodType> remainingFoods = new List<FoodType>();
 
     public System.Action<FoodType> OnFoodReceived;
 

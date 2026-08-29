@@ -33,12 +33,15 @@ public class GridManager : MonoBehaviour
     private bool isDraggingPiece;
     private Vector3 dragOffset;
     private Camera mainCamera;
+    private Vector2 currentPointerPosition;
+    private bool usingTouch;
 
     [SerializeField]
     private LayerMask foodLayer;
 
     [SerializeField]
     private float dragMoveSpeed = 15f;
+
 
     private void Awake()
     {
@@ -61,13 +64,39 @@ public class GridManager : MonoBehaviour
 
     private void HandleSelection()
     {
-        if (Mouse.current == null)
-            return;
+        Vector2 pointerPosition;
 
-        if (!Mouse.current.leftButton.wasPressedThisFrame)
-            return;
+        // -----------------------------
+        // TOUCH
+        // -----------------------------
 
-        Camera cam = Camera.main;
+        if (Touchscreen.current != null &&
+            Touchscreen.current.primaryTouch.press.wasPressedThisFrame)
+        {
+            usingTouch = true;
+
+            pointerPosition =
+                Touchscreen.current.primaryTouch.position.ReadValue();
+        }
+
+        // -----------------------------
+        // MOUSE
+        // -----------------------------
+
+        else if (Mouse.current != null &&
+                 Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            usingTouch = false;
+
+            pointerPosition =
+                Mouse.current.position.ReadValue();
+        }
+        else
+        {
+            return;
+        }
+
+        Camera cam = mainCamera;
 
         if (cam == null)
         {
@@ -75,11 +104,11 @@ public class GridManager : MonoBehaviour
             return;
         }
 
-        Vector2 mousePosition = Mouse.current.position.ReadValue();
+        Ray ray =
+            cam.ScreenPointToRay(pointerPosition);
 
-        Ray ray = cam.ScreenPointToRay(mousePosition);
-
-        RaycastHit[] hits = Physics.RaycastAll(ray);
+        RaycastHit[] hits =
+            Physics.RaycastAll(ray);
 
         Debug.Log("Raycast hits: " + hits.Length);
 
@@ -91,7 +120,8 @@ public class GridManager : MonoBehaviour
             FoodPiece piece =
                 hit.collider.GetComponentInParent<FoodPiece>();
 
-            if (piece != null && hit.distance < closestDistance)
+            if (piece != null &&
+                hit.distance < closestDistance)
             {
                 closestFood = piece;
                 closestDistance = hit.distance;
@@ -100,21 +130,25 @@ public class GridManager : MonoBehaviour
 
         if (closestFood != null)
         {
-            // Deselect the previous food
-            if (selectedPiece != null && selectedPiece != closestFood)
+            // Deselect previous food
+            if (selectedPiece != null &&
+                selectedPiece != closestFood)
             {
                 selectedPiece.SetSelected(false);
             }
 
-            // Select the new food
             selectedPiece = closestFood;
+
             selectedPiece.SetSelected(true);
 
-            Debug.Log("SELECTED FOOD: " + selectedPiece.name );
+            Debug.Log(
+                "SELECTED FOOD: " +
+                selectedPiece.name
+            );
         }
         else
         {
-            Debug.Log("No FoodPiece found under mouse.");
+            Debug.Log("No FoodPiece found under pointer.");
         }
     }
 
@@ -123,25 +157,69 @@ public class GridManager : MonoBehaviour
         if (selectedPiece == null)
             return;
 
-        if (Mouse.current == null || mainCamera == null)
-            return;
+        bool pointerPressed = false;
+        bool pointerHeld = false;
+        bool pointerReleased = false;
 
+        // -----------------------------
+        // TOUCH
+        // -----------------------------
+
+        if (Touchscreen.current != null)
+        {
+            usingTouch = true;
+
+            pointerPressed =
+                Touchscreen.current.primaryTouch.press.wasPressedThisFrame;
+
+            pointerHeld =
+                Touchscreen.current.primaryTouch.press.isPressed;
+
+            pointerReleased =
+                Touchscreen.current.primaryTouch.press.wasReleasedThisFrame;
+        }
+
+        // -----------------------------
+        // MOUSE
+        // -----------------------------
+
+        else if (Mouse.current != null)
+        {
+            usingTouch = false;
+
+            pointerPressed =
+                Mouse.current.leftButton.wasPressedThisFrame;
+
+            pointerHeld =
+                Mouse.current.leftButton.isPressed;
+
+            pointerReleased =
+                Mouse.current.leftButton.wasReleasedThisFrame;
+        }
+
+        // -----------------------------
         // START DRAG
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+        // -----------------------------
+
+        if (pointerPressed)
         {
             BeginDrag();
         }
 
+        // -----------------------------
         // CONTINUE DRAG
-        if (isDraggingPiece &&
-            Mouse.current.leftButton.isPressed)
+        // -----------------------------
+
+        if (isDraggingPiece && pointerHeld)
         {
             DragPiece();
         }
 
+        // -----------------------------
         // END DRAG
-        if (isDraggingPiece &&
-            Mouse.current.leftButton.wasReleasedThisFrame)
+        // -----------------------------
+
+        if (isDraggingPiece && pointerReleased)
         {
             EndDrag();
         }
@@ -154,23 +232,23 @@ public class GridManager : MonoBehaviour
         dragStartGridPosition =
             selectedPiece.gridPosition;
 
-        Vector3 mouseWorldPosition =
-            GetMouseWorldPosition();
+        Vector3 pointerWorldPosition =
+    GetPointerWorldPosition();
 
         dragOffset =
-            selectedPiece.transform.position -
-            mouseWorldPosition;
+    selectedPiece.transform.position -
+    pointerWorldPosition;
 
         UnregisterPiece(selectedPiece);
     }
 
     private void DragPiece()
     {
-        Vector3 mouseWorldPosition =
-            GetMouseWorldPosition();
+        Vector3 pointerWorldPosition =
+    GetPointerWorldPosition();
 
         Vector3 desiredPosition =
-            mouseWorldPosition + dragOffset;
+    pointerWorldPosition + dragOffset;
 
         desiredPosition =
             ClampToGridBounds(
@@ -245,47 +323,103 @@ public class GridManager : MonoBehaviour
         if (movement.sqrMagnitude < 0.000001f)
             return Vector3.zero;
 
-        Vector3 direction = movement.normalized;
-        float distance = movement.magnitude;
+        Vector3 remainingMovement = movement;
+        Vector3 finalMovement = Vector3.zero;
 
-        // Size of the food in world space
+        // Food footprint
         Vector3 halfExtents = new Vector3(
             piece.size.x * cellSize * 0.5f,
             0.5f,
             piece.size.y * cellSize * 0.5f
         );
 
-        // Slightly shrink the collision box
-        // so pieces don't feel artificially far apart.
         halfExtents.x -= 0.03f;
         halfExtents.z -= 0.03f;
 
-        RaycastHit hit;
+        Vector3 currentCastPosition = currentPosition;
 
-        if (Physics.BoxCast(
-            currentPosition,
-            halfExtents,
-            direction,
-            out hit,
-            Quaternion.identity,
-            distance,
-            foodLayer
-        ))
+        // Allow a few collision corrections.
+        // This is useful when sliding around corners.
+        for (int i = 0; i < 3; i++)
         {
-            FoodPiece hitPiece =
-                hit.collider.GetComponentInParent<FoodPiece>();
+            if (remainingMovement.sqrMagnitude < 0.000001f)
+                break;
 
-            // Ignore our own colliders
-            if (hitPiece != null && hitPiece != piece)
+            Vector3 direction =
+                remainingMovement.normalized;
+
+            float distance =
+                remainingMovement.magnitude;
+
+            RaycastHit[] hits =
+                Physics.BoxCastAll(
+                    currentCastPosition,
+                    halfExtents,
+                    direction,
+                    Quaternion.identity,
+                    distance + 0.01f,
+                    foodLayer
+                );
+
+            RaycastHit closestHit = default;
+            bool foundHit = false;
+            float closestDistance = Mathf.Infinity;
+
+            foreach (RaycastHit hit in hits)
             {
-                float safeDistance =
-                    Mathf.Max(0f, hit.distance - 0.02f);
+                FoodPiece hitPiece =
+                    hit.collider.GetComponentInParent<FoodPiece>();
 
-                return direction * safeDistance;
+                // Ignore our own colliders
+                if (hitPiece == null || hitPiece == piece)
+                    continue;
+
+                if (hit.distance < closestDistance)
+                {
+                    closestDistance = hit.distance;
+                    closestHit = hit;
+                    foundHit = true;
+                }
             }
+
+            // Nothing blocking us
+            if (!foundHit)
+            {
+                finalMovement += remainingMovement;
+                break;
+            }
+
+            // Move until just before the obstacle
+            float safeDistance =
+                Mathf.Max(
+                    0f,
+                    closestHit.distance - 0.005f
+                );
+
+            Vector3 movementToObstacle =
+                direction * safeDistance;
+
+            finalMovement += movementToObstacle;
+
+            // Calculate what movement is left
+            Vector3 leftoverMovement =
+                remainingMovement - movementToObstacle;
+
+            // Slide along the collision surface
+            Vector3 slideMovement =
+                Vector3.ProjectOnPlane(
+                    leftoverMovement,
+                    closestHit.normal
+                );
+
+            currentCastPosition =
+                currentPosition + finalMovement;
+
+            remainingMovement =
+                slideMovement;
         }
 
-        return movement;
+        return finalMovement;
     }
 
     private Vector3 ClampToGridBounds(
@@ -392,12 +526,23 @@ public class GridManager : MonoBehaviour
         }
     }*/
 
-    private Vector3 GetMouseWorldPosition()
+    private Vector3 GetPointerWorldPosition()
     {
+        Vector2 pointerPosition;
+
+        if (usingTouch)
+        {
+            pointerPosition =
+                Touchscreen.current.primaryTouch.position.ReadValue();
+        }
+        else
+        {
+            pointerPosition =
+                Mouse.current.position.ReadValue();
+        }
+
         Ray ray =
-            mainCamera.ScreenPointToRay(
-                Mouse.current.position.ReadValue()
-            );
+            mainCamera.ScreenPointToRay(pointerPosition);
 
         Plane plane =
             new Plane(Vector3.up, Vector3.zero);
@@ -412,8 +557,8 @@ public class GridManager : MonoBehaviour
 
     private void UpdateDraggedPiece()
     {
-        Vector3 mouseWorldPosition =
-            GetMouseWorldPosition();
+        Vector3 mouseWorldPosition = GetPointerWorldPosition();
+            //GetMouseWorldPosition();
 
         Vector3 delta =
             mouseWorldPosition -

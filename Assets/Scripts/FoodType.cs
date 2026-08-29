@@ -6,5 +6,14 @@ public enum FoodType
     Pizza,
     Fries,
     Chicken,
-    Drink
+    Drink,
+    Taco,
+    Sausage,
+    Fish,
+    Sandwich,
+    Susshi,
+    Noodle,
+    BurgerDeal,
+    TacoTrio,
+    HotdogPlate
 }
