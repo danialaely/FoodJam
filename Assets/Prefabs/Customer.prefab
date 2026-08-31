@@ -266,6 +266,7 @@ GameObject:
   - component: {fileID: 4058249211427022994}
   - component: {fileID: 3093244886777343663}
   - component: {fileID: 4569015327207514515}
+  - component: {fileID: 3655437872719416192}
   m_Layer: 0
   m_Name: Customer
   m_TagString: Untagged
@@ -305,7 +306,7 @@ MonoBehaviour:
   requestedFoods: 0000000002000000
   orderUI: {fileID: 385141189775977503}
   patienceTime: 30
-  animationController: {fileID: 0}
+  animationController: {fileID: 4569015327207514515}
 --- !u!114 &4569015327207514515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -319,6 +320,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerAnimationController
   animator: {fileID: 1402629101501115048}
+--- !u!114 &3655437872719416192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6489171108687454829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b83e0cbfab3c5ff45b46b12aaea51fa3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CustomerExpressionController
+  characterRenderer: {fileID: 6273501876140992060}
+  happyFace: {fileID: 2100000, guid: 335309a7cf1c0d74d9e7ebd4f86deaf7, type: 2}
+  sadFace: {fileID: 2100000, guid: 456287515040ff04698a731ca85e4ccd, type: 2}
+  angryFace: {fileID: 2100000, guid: e6c495fac54a911488b25458e2643b1f, type: 2}
+  celebrationFace: {fileID: 2100000, guid: 11b0c4099f8bbb8409ae77de3c9a0e96, type: 2}
 --- !u!1001 &4466212895325099314
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -424,5 +442,10 @@ Animator:
 --- !u!4 &2115668408274111643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2352974409916930473, guid: c1e7e3c9fe3257f4ea9f080e7208ec3b, type: 3}
+  m_PrefabInstance: {fileID: 4466212895325099314}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &6273501876140992060 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 7707022635288130318, guid: c1e7e3c9fe3257f4ea9f080e7208ec3b, type: 3}
   m_PrefabInstance: {fileID: 4466212895325099314}
   m_PrefabAsset: {fileID: 0}
