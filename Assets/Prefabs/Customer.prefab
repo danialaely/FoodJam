@@ -306,7 +306,10 @@ MonoBehaviour:
   requestedFoods: 0000000002000000
   orderUI: {fileID: 385141189775977503}
   patienceTime: 30
+  sadThreshold: 0.5
+  angryThreshold: 0.8
   animationController: {fileID: 4569015327207514515}
+  expressionController: {fileID: 3655437872719416192}
 --- !u!114 &4569015327207514515
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,6 +336,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CustomerExpressionController
   characterRenderer: {fileID: 6273501876140992060}
+  faceMaterialIndex: 1
   happyFace: {fileID: 2100000, guid: 335309a7cf1c0d74d9e7ebd4f86deaf7, type: 2}
   sadFace: {fileID: 2100000, guid: 456287515040ff04698a731ca85e4ccd, type: 2}
   angryFace: {fileID: 2100000, guid: e6c495fac54a911488b25458e2643b1f, type: 2}

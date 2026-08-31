@@ -19,11 +19,27 @@ public class Customer : MonoBehaviour
     [Header("Customer Settings")]
     [SerializeField]
     private float patienceTime = 30f;
+    
+    [SerializeField]
+    private float sadThreshold = 0.5f;
 
+    [SerializeField]
+    private float angryThreshold = 0.8f;
     private float currentPatience;
+    private bool orderCompleted;
+
+    private bool isServing;
+
+    private float happyReactionTimer = 0f;
+
+    [SerializeField]
+    private float happyReactionDuration = 1.5f;
 
     [SerializeField]
     private CustomerAnimationController animationController;
+
+    [SerializeField]
+    private CustomerExpressionController expressionController;
 
     private void Start()
     {
@@ -31,15 +47,73 @@ public class Customer : MonoBehaviour
         currentPatience = patienceTime;
     }
 
+    private void Update()
+    {
+        UpdatePatience();
+    }
+
+    private void UpdatePatience()
+    {
+        if (!isServing)
+            return;
+
+        if (orderCompleted)
+            return;
+
+        if (happyReactionTimer > 0f)
+        {
+            happyReactionTimer -= Time.deltaTime;
+            return;
+        }
+
+        if (currentPatience <= 0f)
+            return;
+
+        currentPatience -= Time.deltaTime;
+
+        float patiencePercentage =
+            currentPatience / patienceTime;
+
+        if (patiencePercentage <= 0.2f)
+        {
+            expressionController.SetExpression(
+                CustomerExpressionController.Expression.Angry
+            );
+        }
+        else if (patiencePercentage <= 0.5f)
+        {
+            expressionController.SetExpression(
+                CustomerExpressionController.Expression.Sad
+            );
+        }
+        else
+        {
+            expressionController.SetExpression(
+                CustomerExpressionController.Expression.Happy
+            );
+        }
+    }
+
     public void SetServingState(bool isServing)
     {
-        // Temporary visual feedback.
-        // We will replace this with proper animation/UI later.
+        this.isServing = isServing;
 
         if (isServing)
         {
+            currentPatience = patienceTime;
+
+            expressionController.SetExpression(
+                CustomerExpressionController.Expression.Happy
+            );
+
             Debug.Log(
                 name + " is now the serving customer."
+            );
+        }
+        else
+        {
+            expressionController.SetExpression(
+                CustomerExpressionController.Expression.Happy
             );
         }
     }
@@ -67,16 +141,22 @@ public class Customer : MonoBehaviour
             OnFoodReceived?.Invoke(food.foodType);
 
             Debug.Log(
-                "Correct food received: "
-                + food.foodType
+                "Correct food received: " + food.foodType
             );
 
             Debug.Log(
-                "Remaining items: "
-                + remainingFoods.Count
+                "Remaining items: " + remainingFoods.Count
             );
 
-            if (remainingFoods.Count == 0)
+            if (remainingFoods.Count > 0)
+            {
+                happyReactionTimer = happyReactionDuration;
+
+                expressionController.SetExpression(
+                    CustomerExpressionController.Expression.Happy
+                );
+            }
+            else
             {
                 CompleteOrder();
             }
@@ -94,8 +174,16 @@ public class Customer : MonoBehaviour
 
     private void CompleteOrder()
     {
+        orderCompleted = true;
+
         Debug.Log("ORDER COMPLETE!");
+
+        expressionController.SetExpression(
+            CustomerExpressionController.Expression.Celebration
+        );
+
         animationController.PlayCelebration();
+
         OnOrderCompleted?.Invoke(this);
     }
 

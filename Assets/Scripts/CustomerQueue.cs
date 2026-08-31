@@ -76,9 +76,7 @@ public class CustomerQueue : MonoBehaviour
                     queuePositions[i].position
                 );
 
-                customers[i].SetServingState(
-                    i == 0
-                );
+                customers[i].SetServingState(i == 0);
             }
         }
     }

@@ -14,6 +14,10 @@ public class CustomerExpressionController : MonoBehaviour
     [SerializeField]
     private Renderer characterRenderer;
 
+    [Header("Face Material Index")]
+    [SerializeField]
+    private int faceMaterialIndex = 1;
+
     [Header("Face Materials")]
     [SerializeField]
     private Material happyFace;
@@ -29,28 +33,55 @@ public class CustomerExpressionController : MonoBehaviour
 
     private void Start()
     {
-        SetExpression(Expression.Sad);
+        SetExpression(Expression.Happy);
     }
 
     public void SetExpression(Expression expression)
     {
+        Material faceMaterial = null;
+
         switch (expression)
         {
             case Expression.Happy:
-                characterRenderer.material = happyFace;
+                faceMaterial = happyFace;
                 break;
 
             case Expression.Sad:
-                characterRenderer.material = sadFace;
+                faceMaterial = sadFace;
                 break;
 
             case Expression.Angry:
-                characterRenderer.material = angryFace;
+                faceMaterial = angryFace;
                 break;
 
             case Expression.Celebration:
-                characterRenderer.material = celebrationFace;
+                faceMaterial = celebrationFace;
                 break;
         }
+
+        if (faceMaterial == null)
+        {
+            Debug.LogWarning("Face material is not assigned!");
+            return;
+        }
+
+        // Get all material slots
+        Material[] materials = characterRenderer.materials;
+
+        // Make sure the index exists
+        if (faceMaterialIndex < 0 || faceMaterialIndex >= materials.Length)
+        {
+            Debug.LogError(
+                $"Face Material Index {faceMaterialIndex} is invalid. " +
+                $"Renderer has {materials.Length} material slots."
+            );
+            return;
+        }
+
+        // Change ONLY the face material
+        materials[faceMaterialIndex] = faceMaterial;
+
+        // Apply the updated material array
+        characterRenderer.materials = materials;
     }
 }
