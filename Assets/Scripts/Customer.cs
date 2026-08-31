@@ -22,6 +22,9 @@ public class Customer : MonoBehaviour
 
     private float currentPatience;
 
+    [SerializeField]
+    private CustomerAnimationController animationController;
+
     private void Start()
     {
         Debug.Log( "Customer spawned. Waiting for order." );
@@ -92,12 +95,13 @@ public class Customer : MonoBehaviour
     private void CompleteOrder()
     {
         Debug.Log("ORDER COMPLETE!");
-
+        animationController.PlayCelebration();
         OnOrderCompleted?.Invoke(this);
     }
 
     public void LeaveCustomer(Vector3 exitPosition)
     {
+        animationController.SetWalking(true);
         StartCoroutine(LeaveRoutine(exitPosition));
     }
 
@@ -133,14 +137,12 @@ public class Customer : MonoBehaviour
 
     public void MoveTo(Vector3 targetPosition)
     {
-        StartCoroutine(
-            MoveToRoutine(targetPosition)
-        );
+        animationController.SetWalking(true);
+
+        StartCoroutine(MoveToRoutine(targetPosition));
     }
 
-    private System.Collections.IEnumerator MoveToRoutine(
-    Vector3 targetPosition
-)
+    private System.Collections.IEnumerator MoveToRoutine(Vector3 targetPosition)
     {
         float duration = 0.5f;
         float elapsed = 0f;
@@ -164,5 +166,6 @@ public class Customer : MonoBehaviour
         }
 
         transform.position = targetPosition;
+        animationController.SetWalking(false);
     }
 }
