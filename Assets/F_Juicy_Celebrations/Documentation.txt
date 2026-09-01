@@ -1,0 +1,594 @@
+================================================================================
+  JUICY CELEBRATIONS - VFX PARTICLE PACK
+  Documentation v1.0
+  By Fateloom
+================================================================================
+
+Thank you for purchasing Juicy Celebrations! This package provides
+high-quality, ready-to-use celebration and victory VFX effects including
+confetti bursts, god rays, star explosions, and fireworks — perfect for
+level-up screens, stage clears, achievement popups, and reward moments.
+
+================================================================================
+  TABLE OF CONTENTS
+================================================================================
+
+  1. Package Overview
+  2. Requirements
+  3. Quick Start
+  4. Folder Structure
+  5. Prefabs
+  6. Shaders Reference
+  7. Materials
+  8. Textures
+  9. FX Tester Tool
+  10. Customization Guide
+  11. Performance Tips
+  12. Troubleshooting & FAQ
+  13. Support & Contact
+
+================================================================================
+  1. PACKAGE OVERVIEW
+================================================================================
+
+Juicy Celebrations includes:
+
+  - 9 ready-to-use VFX prefabs (Landscape & Portrait variants)
+  - 6 custom shaders optimized for particle effects
+  - 11 pre-configured materials
+  - 4 hand-crafted textures
+  - 1 star mesh model
+  - 1 FX Tester tool for quick previewing
+  - 1 demo scene
+
+All effects are designed to work out of the box. Simply drag a prefab
+into your scene or instantiate it via script.
+
+================================================================================
+  2. REQUIREMENTS
+================================================================================
+
+  - Unity 6 (6000.0) or later
+  - Universal Render Pipeline (URP)
+  - TextMeshPro (for FX Tester UI only)
+  - New Input System (for FX Tester only)
+
+  Note: The particle shaders (ConfettiParticle, GodRays, StarBurst,
+  SoftAdditiveParticle, TrailGlow) use Built-in CG shaders which are
+  compatible with both Built-in and URP pipelines.
+
+  The StylizedStarUnlit shader is URP-native with full SRP Batcher support.
+
+================================================================================
+  3. QUICK START
+================================================================================
+
+  Step 1: Import the package into your Unity project.
+
+  Step 2: Navigate to F_Juicy_Celebrations/Prefabs/ in the Project window.
+
+  Step 3: Drag any prefab into your scene or Instantiate it via code:
+
+      GameObject fx = Instantiate(celebrationPrefab, spawnPosition, Quaternion.identity);
+      Destroy(fx, 8f); // Auto-cleanup after 8 seconds
+
+  Step 4: Press Play. The effect will play automatically.
+
+  That's it! For customization, see Section 10.
+
+================================================================================
+  4. FOLDER STRUCTURE
+================================================================================
+
+  F_Juicy_Celebrations/
+  |
+  |-- Demo/
+  |   |-- Scenes/
+  |   |   |-- Scene_Demo.unity         Demo scene with FX Tester
+  |   |-- Scripts/
+  |       |-- FXTester.cs              Runtime FX preview tool
+  |
+  |-- Materials/
+  |   |-- Mat_Confetti_1.mat           Confetti particles material
+  |   |-- Mat_Godrays.mat              Golden god rays material
+  |   |-- Mat_Godrays_Color.mat        Colorful god rays variant
+  |   |-- Mat_Godrays_Silver.mat       Silver/platinum god rays
+  |   |-- Mat_Godray_Party.mat         Party-themed god rays
+  |   |-- Mat_Godray_Party 1.mat       Party god rays variant
+  |   |-- Mat_SOFTPARICLE.mat          Soft additive glow particles
+  |   |-- Mat_STARBURST.mat            Golden star burst material
+  |   |-- Mat_Starburst_Gray.mat       Silver star burst variant
+  |   |-- Mat_TRAIL.mat                Golden trail material
+  |   |-- Mat_Trail_Silver.mat         Silver trail variant
+  |
+  |-- Models/
+  |   |-- Mesh_Star_1.fbx             Stylized star mesh
+  |
+  |-- Prefabs/
+  |   |-- FX_Golden_Landscape.prefab   Gold celebration (landscape)
+  |   |-- FX_Golden_Portrait.prefab    Gold celebration (portrait)
+  |   |-- FX_Party_Landscape.prefab    Colorful party (landscape)
+  |   |-- FX_Party_Portrait.prefab     Colorful party (portrait)
+  |   |-- FX_Star_Explosion_Landscape  Star explosions (landscape)
+  |   |-- FX_Star_Explosion_Portrait   Star explosions (portrait)
+  |   |-- FX_Fireworks_Landscape       Fireworks display (landscape)
+  |   |-- FX_Fireworks_Portrait        Fireworks display (portrait)
+  |   |-- FX_Godray.prefab             Standalone god rays
+  |
+  |-- Shaders/
+  |   |-- ConfettiParticle.shader      Confetti flip animation shader
+  |   |-- GodRays.shader               Procedural rotating light rays
+  |   |-- StarBurst.shader             Star explosion with spikes
+  |   |-- SoftAdditiveParticle.shader  Soft depth-fade particle
+  |   |-- TrailGlow.shader             Glowing particle trail
+  |   |-- StylizedStarUnlit.shader     Stylized mesh shader (URP)
+  |   |-- Mat_Fresnel.mat              Fresnel star mesh material
+  |
+  |-- Textures/
+      |-- T_Confetti_1.png             Confetti particle sprite
+      |-- T_ConfettiCircle.png         Circular confetti sprite
+      |-- T_ConfettiSquare.png         Square confetti sprite
+      |-- T_Star.png                   Star glow sprite
+
+================================================================================
+  5. PREFABS
+================================================================================
+
+  All prefabs are pre-configured and ready to use. Simply drag them into
+  your scene or instantiate them from code.
+
+  LANDSCAPE vs PORTRAIT:
+  Effects come in two variants optimized for different screen orientations.
+  Use Landscape for PC/Console and Portrait for mobile games.
+
+  --- FX_Golden ---
+  A premium golden victory celebration. Features golden confetti bursting
+  upward, warm god rays expanding from center, and golden star explosions
+  with glowing trails. Ideal for: Level completion, boss defeats, rewards.
+
+  --- FX_Party ---
+  A vibrant, multi-colored celebration with rainbow confetti, colorful
+  god rays, and bright star bursts. Uses a wide color palette for a
+  festive feel. Ideal for: Achievements, milestones, party moments.
+
+  --- FX_Star_Explosion ---
+  Focused star burst effects with dramatic spike animations and glowing
+  trails. Creates a firework-like burst pattern radiating from center.
+  Ideal for: Power-ups, item pickups, combo rewards.
+
+  --- FX_Fireworks ---
+  A sequential fireworks display with multiple timed bursts, each
+  with trailing sparks. Creates an extended celebration moment.
+  Ideal for: End-of-game celebrations, high scores, special events.
+
+  --- FX_Godray ---
+  Standalone god rays effect. A single rotating light beam pattern
+  perfect for background ambiance or highlighting UI elements.
+  Ideal for: Behind reward popups, title screens, item showcases.
+
+================================================================================
+  6. SHADERS REFERENCE
+================================================================================
+
+  All shaders are found under the "FateloomFx/" category in the shader
+  dropdown menu when creating or editing materials.
+
+  --------------------------------------------------------------------------
+  6.1  FateloomFx/ConfettiParticle
+  --------------------------------------------------------------------------
+
+  Purpose:  Confetti and small particle pieces with a card-flip animation.
+  Blending: Alpha Blended (SrcAlpha OneMinusSrcAlpha)
+
+  Properties:
+    Particle Texture    Sprite texture for confetti shape
+    Tint Color          Color multiplier applied to each particle
+    Brightness          Overall brightness multiplier (0-3, default: 1.2)
+    Flip Speed          How fast confetti pieces flip/tumble (0-20, default: 8)
+    Edge Softness       Softens particle edges to avoid hard cuts (0-1)
+
+  Usage Tips:
+    - Assign different confetti shapes via the Particle Texture slot.
+    - The flip effect uses Custom Data from the particle system. Enable
+      Custom Data in your Particle System and send a random value to
+      TEXCOORD1.x for varied flip timing per particle.
+    - Increase Flip Speed for more energetic celebrations.
+    - Keep Edge Softness low (0.05-0.1) for crisp confetti.
+
+  --------------------------------------------------------------------------
+  6.2  FateloomFx/GodRays
+  --------------------------------------------------------------------------
+
+  Purpose:  Procedural rotating light beams radiating from center.
+  Blending: Additive (One One)
+
+  Properties:
+    Ray Texture         Optional base texture (usually left white)
+    Ray Color           Color of the light rays (RGBA, alpha controls opacity)
+    Core Glow Color     Color of the bright center glow
+    Intensity           Overall brightness (0-5, default: 1.5)
+    Fade Start          Distance from center where rays begin fading (0-1)
+    Fade End            Distance from center where rays fully fade (0-1)
+    Pulse Speed         Speed of the breathing/pulse animation (0-5)
+    Pulse Amount        Intensity of the pulse effect (0-1)
+    Rotation Speed      How fast rays rotate. Negative = reverse (-2 to 2)
+    Ray Count           Number of light beams (2-32, default: 12)
+    Ray Sharpness       Edge sharpness of rays. Higher = sharper (0.1-10)
+    Noise Scale         Amount of noise-based variation on rays (0-10)
+    Noise Speed         Speed of noise animation (0-2)
+    Vignette Strength   Edge darkening intensity (0-3)
+
+  Usage Tips:
+    - Use this on a single large billboard particle facing the camera.
+    - Set Particle System Max Particles to 1 for best results.
+    - Adjust Ray Count and Ray Sharpness together to control the look.
+    - Lower Rotation Speed (0.1-0.2) for subtle, elegant rotation.
+    - The shader is fully procedural — no ray texture is required.
+
+  --------------------------------------------------------------------------
+  6.3  FateloomFx/StarBurst
+  --------------------------------------------------------------------------
+
+  Purpose:  Star/firework explosions with animated spike patterns.
+  Blending: Additive (One One)
+
+  Properties:
+    Star Texture        Optional star shape texture
+    Tint Color          Outer color of the star burst
+    Core Color          Color of the bright center (usually white)
+    Brightness          Overall brightness (0-8, default: 3.0)
+    Glow Size           Radius of the soft glow around center (0-2)
+    Spike Count         Number of star spikes/rays (2-12, default: 4)
+    Spike Length         Length of each spike (0-2)
+    Spike Sharpness     How sharp/thin the spikes are (0.1-20)
+    Flicker Speed       Speed of brightness flickering (0-20)
+    Flicker Amount      Intensity of the flicker effect (0-1)
+    Rotation Speed      Spike rotation speed. Negative = reverse (-10 to 10)
+    Fade Out Power      Controls how quickly edges fade to transparent (0.1-5)
+
+  Usage Tips:
+    - Works great with the Particle System Trails module enabled.
+    - Each particle gets a unique flicker pattern via Custom Data.
+    - Combine with TrailGlow shader for complete firework trails.
+    - Use 4-6 Spike Count for classic stars, 2 for lens flares.
+
+  --------------------------------------------------------------------------
+  6.4  FateloomFx/SoftAdditiveParticle
+  --------------------------------------------------------------------------
+
+  Purpose:  General-purpose soft particle shader with depth-based fading.
+  Blending: Premultiplied Alpha (One OneMinusSrcAlpha)
+
+  Properties:
+    Particle Texture    Sprite/texture for the particle
+    Tint Color          Color tint
+    Intensity           Brightness multiplier (0-5, default: 1.0)
+    Soft Factor         Depth-based soft fade distance (0-3, default: 1.0)
+    Use Vertex Color    Toggle whether to use particle system colors
+
+  Usage Tips:
+    - Soft Particles require the camera to render a Depth Texture.
+      In URP, enable Depth Texture in your URP Asset settings.
+    - Increase Soft Factor for smoother blending with scene geometry.
+    - Ideal for background glow particles, dust, and ambient sparkles.
+
+  --------------------------------------------------------------------------
+  6.5  FateloomFx/TrailGlow
+  --------------------------------------------------------------------------
+
+  Purpose:  Glowing trail effect for particle trails.
+  Blending: Soft Additive (SrcAlpha One)
+
+  Properties:
+    Trail Texture       Gradient texture for the trail
+    Trail Color         Color tint (RGBA)
+    Intensity           Trail brightness (0-5, default: 2.0)
+    Fade Along Trail    How quickly the trail fades from head to tail (0-3)
+    Width Fade          How quickly edges of the trail width fade (0-5)
+
+  Usage Tips:
+    - Assign this material to the Trail Material slot in the Particle
+      System Renderer module (not the main Material slot).
+    - Higher Fade Along Trail = shorter visible trail.
+    - Higher Width Fade = thinner trail edges.
+
+  --------------------------------------------------------------------------
+  6.6  FateloomFx/StylizedStarUnlit
+  --------------------------------------------------------------------------
+
+  Purpose:  Stylized unlit shader for 3D star meshes with fresnel rim
+            glow. URP-native, SRP Batcher compatible.
+  Blending: Configurable (default: Opaque)
+
+  Properties:
+
+    [BASE]
+    Use Texture         Toggle texture sampling on/off (texture is optional)
+    Texture             Base texture (only sampled when Use Texture is on)
+    Base Color          Main color of the mesh
+    Brightness          Overall brightness multiplier (0-10)
+
+    [FRESNEL RIM]
+    Enable Fresnel      Toggle fresnel rim glow on/off
+    Fresnel Color       Color of the glowing rim edges
+    Fresnel Power       Controls rim thickness. Higher = thinner rim (0.1-10)
+    Fresnel Intensity   Brightness of the rim glow (0-10)
+
+    [INNER GLOW]
+    Enable Inner Glow   Toggle center glow on/off
+    Inner Glow Color    Color of the center-facing glow
+    Inner Glow Power    Focus of the glow. Higher = more focused (0.1-10)
+    Inner Glow Intensity  Brightness of the inner glow (0-5)
+
+    [EMISSION]
+    Emission Color      HDR emission color (supports bloom)
+    Emission Intensity  Emission brightness (0-15)
+
+    [PULSE ANIMATION]
+    Enable Pulse        Toggle breathing animation on/off
+    Pulse Speed         Breathing speed (0-10)
+    Pulse Min           Minimum brightness during pulse (0-1)
+    Pulse Max           Maximum brightness during pulse (1-3)
+
+    [HEIGHT GRADIENT]
+    Enable Gradient     Toggle height-based color gradient on/off
+    Top Color           Color at the top of the mesh
+    Bottom Color        Color at the bottom of the mesh
+    Gradient Offset     Shifts the gradient center point (-2 to 2)
+    Gradient Range      Controls gradient spread (0.01-5)
+
+    [RENDERING]
+    Cull Mode           Back / Front / Off
+    ZWrite              On / Off
+    Src Blend           Source blend factor (for transparency)
+    Dst Blend           Destination blend factor
+
+  Usage Tips:
+    - This shader requires NO texture. Use Base Color + Fresnel for a
+      clean, stylized look on the included Mesh_Star_1 model.
+    - For transparent/additive rendering, set:
+        Src Blend = SrcAlpha, Dst Blend = One, ZWrite = Off
+    - Enable Pulse for a breathing glow animation on idle stars.
+    - Emission Color works with URP Post-Processing Bloom.
+    - Height Gradient is great for making the star tips a different
+      color from the center.
+
+================================================================================
+  7. MATERIALS
+================================================================================
+
+  Pre-configured materials are in the Materials/ folder. Each material
+  is already assigned to the correct shader with tuned values.
+
+  To create your own material:
+    1. Right-click in Project > Create > Material
+    2. In the Inspector, click the Shader dropdown
+    3. Navigate to FateloomFx/ and select the desired shader
+    4. Adjust properties as needed
+
+  Color Themes:
+
+    GOLDEN (Default)
+    Base colors: #FFD94A, #FFB020
+    Trails: #FFD94A
+    God Rays: #FFE8A0
+    Suitable for: Victory, rewards, premium moments
+
+    PARTY (Colorful)
+    Base colors: #FF3355, #44BBFF, #44FF88, #FFDD44
+    Trails: #F472B6
+    God Rays: #E0C3FC
+    Suitable for: Achievements, celebrations, festive events
+
+    SILVER (Premium)
+    Base colors: #C0C0C0, #E0E0FF
+    Trails: #D4D4FF
+    God Rays: #E8E8FF
+    Suitable for: Platinum rewards, secondary celebrations
+
+================================================================================
+  8. TEXTURES
+================================================================================
+
+  All textures are in the Textures/ folder and are optimized for
+  particle systems.
+
+  T_Confetti_1.png      Primary confetti sprite sheet
+  T_ConfettiCircle.png  Circular confetti piece (32x32)
+  T_ConfettiSquare.png  Square confetti piece (32x32)
+  T_Star.png            Star glow sprite for star burst effects
+
+  Texture Import Tips:
+    - Keep textures as Sprite or Default type.
+    - For particle textures, disable Generate Mip Maps if not needed.
+    - Compression: Use RGBA Compressed for best quality/size ratio.
+
+================================================================================
+  9. FX TESTER TOOL
+================================================================================
+
+  The FX Tester is a runtime tool for quickly previewing and comparing
+  effects during development.
+
+  SETUP:
+    1. Open the demo scene: Demo/Scenes/Scene_Demo.unity
+       Or create your own setup:
+       a. Create an empty GameObject in your scene
+       b. Add the FXTester component (namespace: Fateloom)
+       c. Add entries to the Effects list (name + prefab)
+       d. Optionally assign Spawn Locations (Transform array)
+       e. Assign a TextMeshPro UI text to the FX Name Display field
+
+  CONTROLS:
+    Q           Select previous effect
+    E           Select next effect
+    Space       Spawn selected effect
+    Left Mouse  Spawn selected effect
+    X           Clear all spawned effects
+
+  INSPECTOR SETTINGS:
+    Effects             List of FX entries (name + prefab pairs)
+    Spawn Locations     Array of Transform points where effects spawn
+    Cycle Spawn Points  If enabled, cycles through spawn points in order
+    Camera Spawn Dist   Fallback spawn distance in front of camera (5m default)
+    Auto Destroy Time   Seconds before spawned effects are destroyed (0 = never)
+    FX Name Display     TextMeshProUGUI reference to show current effect name
+
+  DEPENDENCIES:
+    - New Input System package (com.unity.inputsystem)
+    - TextMeshPro package (com.unity.textmeshpro)
+
+================================================================================
+  10. CUSTOMIZATION GUIDE
+================================================================================
+
+  --- Changing Colors ---
+
+  Method 1: Edit the Material
+    Select any material in Materials/ folder and adjust colors directly
+    in the Inspector. Changes are immediate and saved automatically.
+
+  Method 2: Particle System Color Module
+    All shaders support Particle System vertex colors. Use the Color
+    over Lifetime or Start Color modules to override colors per-particle
+    without creating new materials.
+
+  --- Adjusting Effect Timing ---
+
+  Select the prefab and expand the Particle System hierarchy. Each child
+  system controls a different layer of the effect:
+
+    - Adjust Start Delay for staggered timing between layers
+    - Modify Duration and Start Lifetime for effect length
+    - Edit Emission > Bursts for the number and timing of particle bursts
+
+  --- Making Effects Bigger/Smaller ---
+
+    1. Scale the parent GameObject (uniform scale recommended)
+    2. Or adjust Start Size in each Particle System's Main module
+    3. For God Rays, increase Start Size to cover more screen area
+
+  --- Creating Custom Color Variants ---
+
+    1. Duplicate an existing material (Ctrl+D)
+    2. Rename it (e.g., "Mat_Confetti_Blue")
+    3. Adjust colors to your preference
+    4. Assign the new material to your Particle System Renderer
+
+  --- Landscape to Portrait Conversion ---
+
+    1. Duplicate a Landscape prefab
+    2. Open the prefab
+    3. On the Shape module of confetti systems, reduce X scale and
+       increase Y scale
+    4. Adjust emission burst counts if needed (fewer for portrait)
+    5. Reposition spawn areas to fit portrait dimensions
+
+  --- Integrating with UI ---
+
+    For effects behind UI popups:
+    1. Place the effect in World Space behind your Canvas
+    2. Or use a secondary Camera rendering to a RenderTexture
+    3. Display the RenderTexture on a Raw Image in your Canvas
+
+  --- Using with Bloom Post-Processing ---
+
+    Effects look significantly better with URP Bloom enabled:
+    1. Add a Volume to your scene (Global Volume)
+    2. Add Bloom override to the Volume Profile
+    3. Set Threshold: 1.0, Intensity: 0.5-1.0
+    4. Star Burst and God Ray emission values are tuned to respond
+       to bloom naturally
+
+================================================================================
+  11. PERFORMANCE TIPS
+================================================================================
+
+  The effects are optimized but here are tips for different platforms:
+
+  MOBILE (iOS/Android):
+    - Use Portrait prefab variants (fewer particles)
+    - Reduce Emission burst counts by 30-50%
+    - Disable Trails on StarBurst particles
+    - Lower Max Particles to 100 for confetti systems
+    - Use smaller texture sizes (32x32 for confetti)
+
+  PC / CONSOLE:
+    - Default settings are tuned for these platforms
+    - Feel free to increase particle counts for richer effects
+    - Enable Bloom post-processing for enhanced visuals
+
+  GENERAL:
+    - All particle systems use Looping = Off by default
+    - Effects self-terminate after their Duration
+    - Always Destroy() instantiated effects after they finish
+    - Use object pooling for frequently spawned effects
+    - God Rays use only 1 particle — minimal performance cost
+
+  Approximate Particle Counts per Prefab:
+    FX_Golden         ~200 particles peak
+    FX_Party          ~250 particles peak
+    FX_Star_Explosion ~120 particles peak
+    FX_Fireworks      ~180 particles peak
+    FX_Godray         1 particle
+
+================================================================================
+  12. TROUBLESHOOTING & FAQ
+================================================================================
+
+  Q: Effects appear pink/magenta.
+  A: Shaders may need to recompile. Right-click the Shaders folder and
+     select Reimport. If using URP, ensure the StylizedStarUnlit shader
+     is used for mesh materials (URP-compatible).
+
+  Q: Soft particles don't blend with the scene.
+  A: Enable Depth Texture in your URP Renderer Asset:
+     URP Asset > General > Depth Texture = On
+
+  Q: God Rays don't appear or are too dim.
+  A: Check that the Particle System Start Size is large enough (10-15).
+     Also verify the material Intensity is above 0. God Rays use
+     additive blending and may be invisible against bright backgrounds.
+
+  Q: Effects don't play on Instantiate.
+  A: Ensure Play On Awake is enabled on the root Particle System of
+     the prefab. It is enabled by default on all included prefabs.
+
+  Q: FX Tester script has compile errors.
+  A: Install required packages:
+     - Window > Package Manager > Input System (install/update)
+     - Window > Package Manager > TextMeshPro (install/update)
+     FX Tester is a demo tool only; removing it does not affect the
+     VFX prefabs.
+
+  Q: Star mesh appears flat/unlit.
+  A: Ensure the material uses "FateloomFx/StylizedStarUnlit" shader.
+     Increase Brightness and Emission Intensity. Enable Fresnel for
+     visible rim lighting.
+
+  Q: SRP Batcher shows "not compatible" on particle shaders.
+  A: The particle shaders (ConfettiParticle, GodRays, StarBurst, etc.)
+     use Built-in CG code for maximum compatibility. SRP Batcher
+     compatibility is not required for particle materials as they use
+     dynamic batching. Only StylizedStarUnlit is SRP Batcher compatible.
+
+  Q: Can I use these effects in Built-in Render Pipeline?
+  A: Yes. All particle shaders use Built-in CG code and work in both
+     Built-in and URP pipelines. Only StylizedStarUnlit requires URP.
+
+
+================================================================================
+  VERSION HISTORY
+================================================================================
+
+  v1.0 - Initial Release
+    - 9 VFX prefabs (Landscape & Portrait variants)
+    - 6 custom shaders
+    - 11 pre-configured materials
+    - 4 particle textures + 1 star mesh
+    - FX Tester demo tool
+    - Full documentation
+
+================================================================================
+  (c) Fateloom - All Rights Reserved
+================================================================================

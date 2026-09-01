@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 52bdd3db9e3e3814dbc3d8018e45af56
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 370040
+  packageName: 'Juicy FX: Victory, End Game & Casual Particles'
+  packageVersion: 1.0
+  assetPath: Assets/F_Juicy_Celebrations/Shaders/StarBurst.shader
+  uploadId: 889436

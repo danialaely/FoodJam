@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 65e940772122a3941ae81095f05e0b06
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 370040
+  packageName: 'Juicy FX: Victory, End Game & Casual Particles'
+  packageVersion: 1.0
+  assetPath: Assets/F_Juicy_Celebrations/Shaders/TrailGlow.shader
+  uploadId: 889436

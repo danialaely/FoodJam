@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 51f49e4b8e24e064c89ad2a3adf71b42
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 370040
+  packageName: 'Juicy FX: Victory, End Game & Casual Particles'
+  packageVersion: 1.0
+  assetPath: Assets/F_Juicy_Celebrations/Shaders/GodRays.shader
+  uploadId: 889436
